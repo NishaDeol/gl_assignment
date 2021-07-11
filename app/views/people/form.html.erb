@@ -1,0 +1,69 @@
+<div class="my-btn">
+  <h4>Save Details</h4>
+  <div class="two-btn">
+    <%= form_tag people_form_path, :multipart => true  do %>
+      <div class="form-group">
+        <span class="col-md-2 "style="margin-right: 120px;"><%=file_field_tag :file, class: 'form-control-file', required: true %></span>
+        <span class="col-md-3"><%= submit_tag "Import CSV to Fill Form", class: 'btn btn-primary'%></span>
+      </div>
+    <%end%>
+    <!-- <a href="#" class="btn-custom">First</a> -->
+  </div>
+</div>
+<div class="box-body table-responsive ">
+  <table class="table table-hover table-bordered" id="surfaces" >
+    <thead>
+      <style>
+        table, th, td {
+          border: 1px solid black;
+        }
+      </style>
+      <tr style="background-color: #D9D7D7;">
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th> Errors </th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <% @persons_array&.each_with_index do |item, index| %>
+      	<%if item["person_object"]["id"].nil? %>
+	        <%= form_tag update_details_path do %>
+	          <%= hidden_field_tag :index, index %>
+		        <tr>
+		          <td><%= item["person_object"]["id"] %></td>
+		          <td><%= text_field_tag :first_name, "", value: item["person_object"]["first_name"]%></td>
+		          <td><%= text_field_tag :last_name, "", value: item["person_object"]["last_name"]%></td>
+		          <td><%= text_field_tag :email, "", value: item["person_object"]["email"]%></td>
+		          <td class="phone_field"><%= text_field_tag :phone, "",value: item["person_object"]["phone"]%></td>
+	            <td>
+	            	<% item["error_object"].each do |error, value| %>
+	            		<p><%= error + " " + value[0] %></p>
+	            	<%end%>
+	            </td>
+		          <td>
+		            <%= submit_tag "Save", class: 'btn btn-primary'%>
+		          </td>
+		        </tr>
+		      <%end%>
+		    <%else%>
+		    	<tr>
+	          <td><%= item["person_object"]["id"] %></td>
+	          <td><%= item["person_object"]["first_name"]%></td>
+	          <td><%= item["person_object"]["last_name"]%></td>
+	          <td><%= item["person_object"]["email"]%></td>
+	          <td><%= item["person_object"]["phone"]%></td>
+	          <td></td>
+	          <td> </td>
+	        </tr>
+		    <%end%> 
+      <%end%>
+    </tbody>
+  </table>
+</div>
+<script>
+
+</script>
