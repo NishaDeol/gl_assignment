@@ -5,7 +5,8 @@ class PeopleController < ApplicationController
   		@persons_array = JSON.parse(cookies[:all_persons]) unless cookies[:all_persons].nil?
   	end
   	if request.post?
-  		cookies[:all_persons].nil? ? @persons_array = [] : @persons_array= cookies[:all_persons]
+  		cookies[:all_persons] = nil
+  		@persons_array = []
   	  CSV.foreach(params[:file].path, headers: true) do |row|
         person = Person.create(first_name: row["First"], last_name: row["Last"], email: row["Email"], phone: row["Phone"])
         person_hash = {}
